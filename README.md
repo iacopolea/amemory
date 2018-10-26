@@ -3,3 +3,7 @@
 ## Babel
 nel file .babelrc c'è la configurazione
 
+# deploy
+`git push heroku master`
+
+Lo script heroku postdeploy nel package.json avvia il build degli assets su server remoto
