@@ -6,7 +6,6 @@ class Tile extends React.Component {
   constructor(props) {
     super(props);
     // binding
-    // this.clickHandler = this.clickHandler.bind(this);
   }
   render() {
     return (
@@ -24,8 +23,8 @@ class Tile extends React.Component {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.numOfTiles = 8;
-    this.tilesTypes = ['sun', 'bug', 'heart', 'owl', 'car'];
+    this.numOfTiles = 12;
+    this.tilesTypes = ['sun', 'bug', 'heart', 'owl', 'car', 'flower', 'mushroom', 'dice', 'present', 'pencil', 'cloud', 'frog', 'house', 'butterfly'];
     this.state = {
       deck: []
     };

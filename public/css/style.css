@@ -26,6 +26,7 @@
 .square .front,
 .square .back {
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     position: absolute;
     top: 10px;
     left: 10px;
