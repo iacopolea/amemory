@@ -20,7 +20,7 @@
     position: relative;
     height: 100%;
 }
-.square.hover .flipper{
+.square.flipped .flipper{
     transform: rotateY(180deg);
 }
 .square .front,
@@ -53,4 +53,7 @@
 }
 .square.heart .front{
     background-position: -10px -130px;
+}
+.square.car .front{
+    background-position: 110px -10px;
 }

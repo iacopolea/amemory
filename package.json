@@ -9,7 +9,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
+    "dev_server": "nodemon app.js",
+    "dev": "webpack --mode=development",
+    "build": "webpack --mode=production",
     "start": "node app.js"
   },
   "repository": {
@@ -20,11 +22,18 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/iacopo_lea/amemory#readme",
   "dependencies": {
-    "express": "^4.16.4",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0"
+    "express": "^4.16.4"
   },
   "devDependencies": {
-    "nodemon": "^1.18.5"
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "lodash": "^4.17.11",
+    "nodemon": "^1.18.5",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
   }
 }
