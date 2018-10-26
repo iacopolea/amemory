@@ -1,0 +1,24 @@
+{
+  "name": "amemory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/iacopo_lea/amemory.git"
+  },
+  "author": "iacopo.lea@gmail.com",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/iacopo_lea/amemory#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5"
+  }
+}
