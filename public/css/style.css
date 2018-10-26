@@ -1,0 +1,56 @@
+.board {
+    margin: 0 auto;
+    width: 488px;
+    border: 5px double #000;
+    display: flex;
+    flex-flow: row wrap;
+    perspective: 1000px;
+}
+.square {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    position: relative;
+    background: #f3f2f2;
+    border: 1px solid #eaeaea;
+}
+.square .flipper {
+    transition: 0.4s;
+    transform-style: preserve-3d;
+    position: relative;
+    height: 100%;
+}
+.square.hover .flipper{
+    transform: rotateY(180deg);
+}
+.square .front,
+.square .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 100px;
+    height: 100px;
+}
+.square .front {
+    transform: rotateY(180deg);
+    z-index: 2;
+    background-image: url("/img/memory-game-illustration-icons-white-background.jpg");
+    background-size: 600px 600px;
+    overflow: hidden;
+}
+.square .back {
+    background-color: #ea7a7a;
+}
+.square.sun .front{
+    background-position: -10px -10px;
+}
+.square.bug .front{
+    background-position: -130px -10px;
+}
+.square.owl .front{
+    background-position: -130px -130px;
+}
+.square.heart .front{
+    background-position: -10px -130px;
+}
