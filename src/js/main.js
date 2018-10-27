@@ -5,11 +5,12 @@ import _ from 'lodash';
 class Tile extends React.Component {
   constructor(props) {
     super(props);
-    // binding
   }
   render() {
+    const flip = (this.props.flip) ? ' flip' : '';
+    const remove = (this.props.remove) ? ' remove' : '';
     return (
-      <div className={`square ${this.props.type} ${this.props.state}`} id={this.props.number}
+      <div className={`square ${this.props.type}${flip}${remove}`} id={this.props.number}
            onClick={() => this.props.onClick()}>
         <div className="flipper">
           <div className="front"></div>
@@ -24,12 +25,15 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.numOfTiles = 12;
+    this.busy = false;
     this.tilesTypes = ['sun', 'bug', 'heart', 'owl', 'car', 'flower', 'mushroom', 'dice', 'present', 'pencil', 'cloud', 'frog', 'house', 'butterfly'];
     this.state = {
-      deck: []
+      deck: [],
+      turn: 0,
     };
     // binding
-    this.shuffleDeck = this.shuffleDeck.bind(this);
+    //this.shuffleDeck = this.shuffleDeck.bind(this);
+    this.checkPair = this.checkPair.bind(this);
     this.shuffleDeck();
   }
   shuffleDeck() {
@@ -38,13 +42,42 @@ class Board extends React.Component {
     deck = [...deck, ...deck];
     deck = _.shuffle(deck);
     this.state.deck = deck.map((x, i)=>{
-      return { id: i, flip: false, type: x}
+      return { id: i, flip: false, remove: false, type: x}
     });
   }
   handleClick(i) {
-    const deck = this.state.deck.slice();
-    deck[i].flip = true;
-    this.setState({deck: deck});
+    if (!this.busy) {
+      this.busy = true;
+      let deck = this.state.deck;
+      let turn = this.state.turn;
+      deck[i].flip = true;
+      this.setState({
+        deck: deck,
+        turn: ++turn
+      });
+      if (turn === 2) {
+        setTimeout(this.checkPair, 1000);
+      } else {
+        this.busy = false;
+      }
+    }
+  }
+  checkPair() {
+    let deck = this.state.deck;
+    let flipped = _.filter(this.state.deck, (o) => o.flip );
+    let i = flipped[0];
+    let j = flipped[1];
+    if (i.type === j.type) {
+      deck[i.id].remove = true;
+      deck[j.id].remove = true;
+    }
+    deck[i.id].flip = false;
+    deck[j.id].flip = false;
+    this.setState({
+      deck: deck,
+      turn: 0
+    });
+    this.busy = false;
   }
   renderTiles() {
     let tiles = [];
@@ -52,8 +85,9 @@ class Board extends React.Component {
       tiles.push(<Tile
         key={i}
         number={i}
-        state={(this.state.deck[i].flip)?'flipped':''}
-        onClick={() => this.handleClick(i)}
+        flip={(this.state.deck[i].flip)}
+        remove={(this.state.deck[i].remove)}
+        onClick={(!this.state.deck[i].remove) ? () => this.handleClick(i) : () => {}}
         type={this.state.deck[i].type} />);
     }
     return tiles;
@@ -67,6 +101,13 @@ class Board extends React.Component {
   }
 }
 
+class Timer extends React.Component {
+  render() {
+    return (
+      <div>3secs</div>
+    )
+  }
+}
 const amemory = document.getElementById("amemory");
 
-if (amemory) ReactDOM.render(<Board />, amemory);
+if (amemory) ReactDOM.render(<div><Board /><Timer /></div>, amemory);

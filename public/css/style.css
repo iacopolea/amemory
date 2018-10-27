@@ -4,15 +4,16 @@
     border: 5px double #000;
     display: flex;
     flex-flow: row wrap;
-    perspective: 1000px;
 }
 .square {
+    perspective: 1000px;
     width: 120px;
     height: 120px;
     overflow: hidden;
     position: relative;
     background: #f3f2f2;
     border: 1px solid #eaeaea;
+    cursor: pointer;
 }
 .square .flipper {
     transition: 0.4s;
@@ -20,8 +21,13 @@
     position: relative;
     height: 100%;
 }
-.square.flipped .flipper{
+.square.flip .flipper{
     transform: rotateY(180deg);
+}
+.square.remove .flipper{
+    transform: rotateY(-180deg);
+    transition: opacity .4s ease-out .4s, transform .4s;
+    opacity: 0;
 }
 .square .front,
 .square .back {
@@ -57,4 +63,31 @@
 }
 .square.car .front{
     background-position: 110px -10px;
+}
+.square.flower .front{
+    background-position: -250px -10px;
+}
+.square.mushroom .front{
+    background-position: 230px -10px;
+}
+.square.dice .front{
+    background-position: 230px -130px;
+}
+.square.present .front{
+    background-position: 110px -130px;
+}
+.square.pencil .front{
+    background-position: 110px -250px;
+}
+.square.cloud .front{
+    background-position: 230px -250px;
+}
+.square.frog .front{
+    background-position: -250px -250px;
+}
+.square.house .front{
+    background-position: -130px -250px;
+}
+.square.butterfly .front{
+    background-position: -10px -250px;
 }
