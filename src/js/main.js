@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import _ from 'lodash';
-
+import moment from 'moment';
 class Tile extends React.Component {
   constructor(props) {
     super(props);
@@ -104,10 +104,62 @@ class Board extends React.Component {
 class Timer extends React.Component {
   render() {
     return (
-      <div>3secs</div>
+      <div>
+        <div>{moment(this.props.time).format('mm:ss:S')}</div>
+      </div>
+    )
+  }
+}
+
+class Game extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      updateInterval: 100,
+      timerId: false,
+      started: false,
+      timeStarted: 0,
+      timePassed: 0
+    };
+  }
+  componentDidMount() {
+    this.startTimer();
+  }
+  startTimer() {
+    let state = this.state;
+    state.started = true;
+    state.timeStarted = Date.now();
+    this.setState(state);
+    this.updateTimer();
+  }
+  stopTimer() {
+    let state = this.state;
+    clearInterval(state.timerId);
+    state.started = false;
+    state.timeStarted = 0;
+    this.setState(state);
+  }
+  updateTimer() {
+    let state = this.state;
+    state.timerId = setInterval( () => {
+        let state = this.state;
+        if (state.started) {
+          state.timePassed = Date.now() - state.timeStarted;
+          this.setState(state)
+        }
+      }
+      , state.updateInterval);
+    this.setState(state);
+  }
+  render() {
+    return(
+      <div>
+        <Board active={this.state.started}/>
+        <Timer time={this.state.timePassed} />
+      </div>
     )
   }
 }
 const amemory = document.getElementById("amemory");
 
-if (amemory) ReactDOM.render(<div><Board /><Timer /></div>, amemory);
+if (amemory) ReactDOM.render(<Game />, amemory);
