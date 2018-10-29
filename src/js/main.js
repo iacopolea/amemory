@@ -1,12 +1,15 @@
 import {initGame} from './game/Game';
-import {initAuth} from './auth/auth'
+import {initAuth, authStateChanged, signOutAction} from './auth/auth'
 
 window.onload = function() {
   const signIn = document.getElementById('authContainer');
+  const signOut = document.getElementById('signOut');
   const amemory = document.getElementById("amemory");
 
   if (amemory) initGame(amemory);
   if (signIn) initAuth('#authContainer');
+  if (signIn) authStateChanged();
+  if (signOut) signOutAction(signOut);
 };
 
 document.addEventListener('DOMContentLoaded', () => {

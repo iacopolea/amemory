@@ -3,9 +3,36 @@ import firebaseui from 'firebaseui'
 import {CONFIG} from '../_database';
 
 firebase.initializeApp(CONFIG);
-ui = new firebaseui.auth.AuthUI(firebase.auth());
+const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-var uiConfig = {
+const authStateChanged = function() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      user.getIdToken().then(function(accessToken) {
+        document.getElementById('signIn').style.display = 'none';
+        document.getElementById('signOut').style.display = 'block';
+        const accountDetails = JSON.stringify({
+          user
+        }, null, '  ');
+        console.log('account details' + accountDetails);
+      });
+    } else {
+      // User is signed out.
+      document.getElementById('signIn').style.display = 'block';
+    }
+  }, function(error) {
+    console.log(error);
+  });
+};
+
+const signOutAction = ($signOut) => {
+  $signOut.addEventListener('click', function(e) {
+    firebase.auth().signOut();
+    $signOut.style.display = 'none';
+  });
+};
+
+const uiConfig = {
   callbacks: {
     signInSuccessWithAuthResult: function(authResult, redirectUrl) {
       // User successfully signed in.
@@ -21,7 +48,7 @@ var uiConfig = {
   },
   // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
   signInFlow: 'popup',
-  signInSuccessUrl: '<url-to-redirect-to-on-success>',
+  signInSuccessUrl: '/',
   signInOptions: [
     {
       provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -32,11 +59,6 @@ var uiConfig = {
       scopes: [
         'https://www.googleapis.com/auth/plus.login'
       ],
-      customParameters: {
-        // Forces account selection even when one account
-        // is available.
-        prompt: 'select_account'
-      }
     },
     {
       provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
@@ -55,10 +77,8 @@ var uiConfig = {
   // Privacy policy url.
   privacyPolicyUrl: '<your-privacy-policy-url>'
 };
-
 const initAuth = function(elementId) {
   ui.start(elementId, uiConfig);
 };
 
-
-export {initAuth};
+export {initAuth, authStateChanged, signOutAction};
