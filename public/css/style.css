@@ -1,3 +1,6 @@
+.modal.is-open {
+    display: block;
+}
 .board {
     margin: 0 auto;
     width: 488px;

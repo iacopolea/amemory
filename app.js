@@ -10,6 +10,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+app.get('/auth', (req, res) => {
+  res.sendFile(path.join(__dirname, 'auth.html'));
+});
 
 // listen
 app.listen(port, () => console.log(`App listening on port ${port}`));

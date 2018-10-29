@@ -4,20 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Amemory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<section class="section">
-    <div class="container">
-        <h1 class="title">
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
             Amemory
-        </h1>
+        </a>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
-</section>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary modal-auth-open">
+                        <strong>Log in/Sign up</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
 <section class="section">
     <div id="amemory">
     </div>
 </section>
+<div class="modal modal-auth" id="modalAuth">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Authentication</p>
+            <button class="delete close" aria-label="close" data-target="modalAuth"></button>
+        </header>
+        <section class="modal-card-body">
+            <div id="authContainer"></div>
+            <div id="loader">Loading...</div>
+        </section>
+    </div>
+</div>
 <footer>
     <script src="js/main.js"></script>
 </footer>

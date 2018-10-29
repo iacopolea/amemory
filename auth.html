@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="section">
+
+    <!-- Header section containing title -->
+    <header>
+        <div>
+            <div>
+                <h3 class="title">Authentication</h3>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div>
+
+            <!-- Container for the demo -->
+            <div>
+                <div>
+                    <h2>Email &amp; Password Authentication</h2>
+                </div>
+                <div>
+                    <p>Enter an email and password below and either sign in to an existing account or sign up</p>
+                    <div class="control">
+                        <label class="label">Email</label>
+                        <input class="input" type="text" id="email" name="email" placeholder="Email"/>
+                    </div>
+                    <div class="control">
+                        <label class="label">Password</label>
+                        <input class="input" type="password" id="password" name="password" placeholder="Password"/>
+                    </div>
+                    <button class="button" disabled id="sign-in" name="signin">Sign In</button>
+                    <button class="button" id="sign-up" name="signup">Sign Up</button>
+                    <button class="button" disabled id="verify-email" name="verify-email">Send Email Verification</button>
+                    <button class="button" id="password-reset" name="verify-email">Send Password Reset Email</button>
+
+                    <!-- Container where we'll display the user details -->
+                    <div class="user-details-container">
+                        Firebase sign-in status: <span id="sign-in-status">Unknown</span>
+                        <div>Firebase auth <code>currentUser</code> object value:</div>
+                        <pre><code id="account-details">null</code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+<footer>
+    <script src="js/main.js"></script>
+</footer>
+</body>
+</html>
