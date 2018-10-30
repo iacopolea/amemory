@@ -1,17 +1,68 @@
+/*layout*/
+@media all and (max-width: 320px){
+    .section {
+        padding: 2rem 1rem;
+    }
+}
 .modal.is-open {
     display: block;
 }
-.board {
+.game {
+    max-width: 490px;
     margin: 0 auto;
-    width: 488px;
+    position: relative;
+}
+.game.medium {
+    max-width: 610px;
+}
+.game.large {
+    max-width: 730px;
+}
+.board {
+    margin: 0 auto 50px;
     border: 5px double #000;
     display: flex;
     flex-flow: row wrap;
+    position: relative;
+    justify-content: center;
 }
+.start-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(1,1,1,.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.game-controller {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+.game-controller .time {
+    margin-right: 20px;
+}
+.game-controller .moves {
+
+}
+.game-controller .actions {
+    flex: 0 0 100%;
+    text-align: center;
+}
+.game-controller .actions .stop {
+    /* flex: 0 0 80px; */
+    /* text-align: center; */
+}
+/*board*/
 .square {
     perspective: 1000px;
-    width: 120px;
-    height: 120px;
+    width: 77px;
+    height: 77px;
     overflow: hidden;
     position: relative;
     background: #f3f2f2;
@@ -29,7 +80,7 @@
 }
 .square.remove .flipper{
     transform: rotateY(-180deg);
-    transition: opacity .4s ease-out .4s, transform .4s;
+    transition: opacity .4s ease-out, transform .4s;
     opacity: 0;
 }
 .square .front,
@@ -37,60 +88,122 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 100px;
-    height: 100px;
+    top: 0px;
+    left: 0px;
+    width: 77px;
+    height: 77px;
+}
+@media all and (min-width: 500px) {
+    .square {
+        width: 120px;
+        height: 120px;
+    }
+    .square .front,
+    .square .back {
+        top: 10px;
+        left: 10px;
+        width: 100px;
+        height: 100px;
+    }
 }
 .square .front {
     transform: rotateY(180deg);
     z-index: 2;
     background-image: url("/img/memory-game-illustration-icons-white-background.jpg");
-    background-size: 600px 600px;
+    background-size: 450px 450px;
     overflow: hidden;
 }
 .square .back {
     background-color: #ea7a7a;
 }
+
 .square.sun .front{
-    background-position: -10px -10px;
+    background-position: -4px -8px;
 }
 .square.bug .front{
-    background-position: -130px -10px;
+    background-position: -93px -8px;
 }
 .square.owl .front{
-    background-position: -130px -130px;
+    background-position: -96px -98px;
 }
 .square.heart .front{
-    background-position: -10px -130px;
+    background-position: -5px -97px;
 }
 .square.car .front{
-    background-position: 110px -10px;
+    background-position: -366px -5px;
 }
 .square.flower .front{
-    background-position: -250px -10px;
+    background-position: -184px -7px;
 }
 .square.mushroom .front{
-    background-position: 230px -10px;
+    background-position: 175px -8px;
 }
 .square.dice .front{
-    background-position: 230px -130px;
+    background-position: 175px -97px;
 }
 .square.present .front{
-    background-position: 110px -130px;
+    background-position: 86px -97px;
 }
 .square.pencil .front{
-    background-position: 110px -250px;
+    background-position: 86px -189px;
 }
 .square.cloud .front{
-    background-position: 230px -250px;
+    background-position: 174px -188px;
 }
 .square.frog .front{
-    background-position: -250px -250px;
+    background-position: -186px -186px;
 }
 .square.house .front{
-    background-position: -130px -250px;
+    background-position: -95px -277px;
 }
 .square.butterfly .front{
-    background-position: -10px -250px;
+    background-position: -7px -186px;
+}
+
+@media all and (min-width: 500px) {
+    .square .front {
+        background-size: 600px 600px;
+    }
+    .square.sun .front{
+        background-position: -10px -10px;
+    }
+    .square.bug .front{
+        background-position: -130px -10px;
+    }
+    .square.owl .front{
+        background-position: -130px -130px;
+    }
+    .square.heart .front{
+        background-position: -10px -130px;
+    }
+    .square.car .front{
+        background-position: 110px -10px;
+    }
+    .square.flower .front{
+        background-position: -250px -10px;
+    }
+    .square.mushroom .front{
+        background-position: 230px -10px;
+    }
+    .square.dice .front{
+        background-position: 230px -130px;
+    }
+    .square.present .front{
+        background-position: 110px -130px;
+    }
+    .square.pencil .front{
+        background-position: 110px -250px;
+    }
+    .square.cloud .front{
+        background-position: 230px -250px;
+    }
+    .square.frog .front{
+        background-position: -250px -250px;
+    }
+    .square.house .front{
+        background-position: -130px -250px;
+    }
+    .square.butterfly .front{
+        background-position: -10px -250px;
+    }
 }

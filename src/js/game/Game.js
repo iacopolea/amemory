@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import _ from 'lodash';
 import moment from 'moment';
+import _ from 'lodash';
+import firebase from '../_database'
+
 class Tile extends React.Component {
   constructor(props) {
     super(props);
@@ -24,17 +26,17 @@ class Tile extends React.Component {
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.numOfTiles = 12;
+    this.numOfTiles = 16;
+    this.numOfTypes = this.numOfTiles/2;
     this.busy = false;
     this.tilesTypes = ['sun', 'bug', 'heart', 'owl', 'car', 'flower', 'mushroom', 'dice', 'present', 'pencil', 'cloud', 'frog', 'house', 'butterfly'];
     this.state = {
       deck: [],
+      found: 0,
       turn: 0,
     };
-    // binding
-    //this.shuffleDeck = this.shuffleDeck.bind(this);
-    this.checkPair = this.checkPair.bind(this);
     this.shuffleDeck();
+    this.checkPair = this.checkPair.bind(this);
   }
   shuffleDeck() {
     let deck = _.shuffle(this.tilesTypes);
@@ -46,8 +48,9 @@ class Board extends React.Component {
     });
   }
   handleClick(i) {
-    if (!this.busy) {
+    if (!this.busy && !this.state.deck[i].remove && !this.state.deck[i].flip) {
       this.busy = true;
+      this.props.increment();
       let deck = this.state.deck;
       let turn = this.state.turn;
       deck[i].flip = true;
@@ -56,27 +59,31 @@ class Board extends React.Component {
         turn: ++turn
       });
       if (turn === 2) {
-        setTimeout(this.checkPair, 1000);
+        setTimeout(this.checkPair, 500);
       } else {
         this.busy = false;
       }
     }
   }
   checkPair() {
-    let deck = this.state.deck;
-    let flipped = _.filter(this.state.deck, (o) => o.flip );
+    let state = this.state;
+    console.log(state);
+    let flipped = _.filter(state.deck, (o) => o.flip );
     let i = flipped[0];
     let j = flipped[1];
     if (i.type === j.type) {
-      deck[i.id].remove = true;
-      deck[j.id].remove = true;
+      state.deck[i.id].remove = true;
+      state.deck[j.id].remove = true;
+      state.found++;
+      if (state.found === this.numOfTypes) {
+        this.props.endGame(true);
+        this.shuffleDeck();
+      }
     }
-    deck[i.id].flip = false;
-    deck[j.id].flip = false;
-    this.setState({
-      deck: deck,
-      turn: 0
-    });
+    state.deck[i.id].flip = false;
+    state.deck[j.id].flip = false;
+    state.turn = 0;
+    this.setState(state);
     this.busy = false;
   }
   renderTiles() {
@@ -93,19 +100,47 @@ class Board extends React.Component {
     return tiles;
   }
   render() {
+    const started = (this.props.active) ? ' is-hidden' : '';
     return (
       <div className="board">
+        <div className={`start-wrapper${started}`}>
+          <button className={'button is-large is-rounded start-button'} onClick={()=>this.props.onStart()}>Start</button>
+        </div>
         {this.renderTiles()}
       </div>
     );
   }
 }
 
-class Timer extends React.Component {
+class GameController extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: firebase.auth().currentUser
+    };
+    this.listenToLogin();
+  }
+  listenToLogin() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({user: user})
+      } else {
+        this.setState({user: false})
+      }
+    });
+  }
   render() {
     return (
-      <div>
-        <div>{moment(this.props.time).format('mm:ss:S')}</div>
+      <div className={'game-controller'}>
+        <div className={'time'}>{moment(this.props.time).format('mm:ss.S')}</div>
+        <div className={'moves'}>Moves: {this.props.moves}</div>
+        <div className={'actions'}>
+          <button className={'button stop'} disabled={!this.props.active} onClick={()=>this.props.onStop()}>Stop</button>
+          <button className={'button save'} disabled={!this.props.canSaveResult}>Save</button>
+        </div>
+        <div className={'user-data'}>
+          <span>{(this.state.user) ? this.state.user.displayName : ''}</span>
+        </div>
       </div>
     )
   }
@@ -115,15 +150,16 @@ export default class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      updateInterval: 100,
       timerId: false,
       started: false,
       timeStarted: 0,
-      timePassed: 0
+      timePassed: 0,
+      moves:0,
+      canSaveResult: false
     };
   }
-  componentDidMount() {
-    this.startTimer();
+  increment() {
+    this.state.moves++;
   }
   startTimer() {
     let state = this.state;
@@ -133,29 +169,38 @@ export default class Game extends React.Component {
     this.updateTimer();
   }
   stopTimer() {
-    let state = this.state;
+    let state = Array.prototype.slice.call(this.state);
     clearInterval(state.timerId);
     state.started = false;
-    state.timeStarted = 0;
     this.setState(state);
   }
   updateTimer() {
-    let state = this.state;
-    state.timerId = setInterval( () => {
+    this.state.timerId = setInterval( () => {
         let state = this.state;
         if (state.started) {
           state.timePassed = Date.now() - state.timeStarted;
           this.setState(state)
         }
-      }
-      , state.updateInterval);
-    this.setState(state);
+      }, 180);
+  }
+  endGame(finished) {
+    this.stopTimer();
+    if (finished) {
+      state.timeStarted = 0;
+    }
   }
   render() {
     return(
-      <div>
-        <Board active={this.state.started}/>
-        <Timer time={this.state.timePassed} />
+      <div className={'game'}>
+        <Board active={this.state.started}
+               onStart={()=>this.startTimer()}
+               increment={()=>this.increment()}
+               endGame={()=>this.endGame()} />
+        <GameController active={this.state.started}
+                        time={this.state.timePassed}
+                        moves={this.state.moves}
+                        onStop={()=>this.stopTimer()}
+                        saveResult={this.state.canSaveResult} />
       </div>
     )
   }
