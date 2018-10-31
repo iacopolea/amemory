@@ -9,3 +9,4 @@ node_modules
 
 # built files
 public/js/**/*.js
+public/js/**/*.map
