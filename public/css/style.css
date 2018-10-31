@@ -10,8 +10,61 @@ body {
 .modal.is-open {
     display: block;
 }
+.modal .modal-content {
+    max-width: 280px;
+    background-color: #FFF;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+.modal-auth .firebaseui-list-item {
+    height: 40px;
+    margin-bottom: 10px;
+    background-color: #FFF;
+}
+.firebaseui-idp-text.firebaseui-idp-text-short {
+    display: none;
+}
+.firebaseui-idp-button {
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 0 0 10px;
+}
+.firebaseui-idp-password {
+    background-color: #b8b8b8;
+    color: #000;
+}
+.firebaseui-idp-google {
+    background-color: #fff;
+    color: #000;
+}
+.firebaseui-idp-facebook {
+    background-color: #3b5998;
+}
+.modal-auth .firebaseui-idp-icon-wrapper {
+    width: 20px;
+    max-width: 20px;
+    overflow: hidden;
+    display: block;
+    margin-right: 20px;
+}
+.modal-auth .firebaseui-idp-icon-wrapper img{
+    max-width: 100%;
+}
+@media all and (min-width: 374px){
+    .modal .modal-content {
+        max-width: 330px;
+    }
+}
 .game {
-    max-width: 490px;
+    max-width: 610px;
     margin: 0 auto;
     position: relative;
 }

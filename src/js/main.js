@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   // close all modals
-  const $modalCloseButtons = Array.prototype.slice.call(document.querySelectorAll('.close'), 0);
+  const $modalCloseButtons = Array.prototype.slice.call(document.querySelectorAll('.modal .delete'), 0);
   if ($modalCloseButtons.length > 0) {
     $modalCloseButtons.forEach( el => {
       el.addEventListener('click', () => {

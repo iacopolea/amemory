@@ -4,7 +4,7 @@ import _ from 'lodash';
 export default class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.numOfTiles = 4;
+    this.numOfTiles = 20;
     this.numOfTypes = this.numOfTiles/2;
     this.busy = false;
     this.tilesTypes = ['sun', 'bug', 'heart', 'owl', 'car', 'flower', 'mushroom', 'dice', 'present', 'pencil', 'cloud', 'frog', 'house', 'butterfly'];

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import GameController from './GameController';
 import Board from './Board';
+import Ranking from './Ranking';
 import {firebase, db} from '../_firebase';
 
 class Game extends React.Component {
@@ -17,8 +18,24 @@ class Game extends React.Component {
       moves:0,
       canSaveResult: false,
       user: user,
+      ranking: []
     };
+    this.getScores();
     this.listenToLogin();
+  }
+  getScores() {
+    db.collection("scores").orderBy("time").limit(10)
+      .get()
+      .then((querySnapshot) => {
+        let scores = [];
+        querySnapshot.forEach(function(doc) {
+          scores.push(doc.data());
+        });
+        this.setState({ranking: scores})
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
   }
   listenToLogin() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -94,6 +111,7 @@ class Game extends React.Component {
                         onStop={()=>this.stopTimer()}
                         onSave={()=>this.writeNewScore()}
                         canSaveResult={this.state.canSaveResult} />
+        <Ranking ranking={this.state.ranking}/>
       </div>
     )
   }
