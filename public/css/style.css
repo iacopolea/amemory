@@ -1,3 +1,6 @@
+body {
+    opacity: .1;
+}
 /*layout*/
 @media all and (max-width: 320px){
     .section {

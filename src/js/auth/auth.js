@@ -1,8 +1,6 @@
-import firebase from '../_database';
-import firebaseui from 'firebaseui'
-//import {CONFIG} from '../_database';
+import {firebase} from '../_firebase';
+import * as firebaseui from 'firebaseui'
 
-// firebase.initializeApp(CONFIG);
 const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
 const authStateChanged = function() {

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import moment from 'moment';
 import _ from 'lodash';
-import firebase from '../_database'
+import {firebase, db} from '../_firebase';
 
 class Tile extends React.Component {
   constructor(props) {
@@ -122,11 +122,31 @@ class GameController extends React.Component {
   }
   listenToLogin() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({user: user})
-      } else {
-        this.setState({user: false})
-      }
+      this.setState({user: user})
+    });
+  }
+  saveResults() {
+    const scoreData = {
+      userId: this.state.user.uid,
+      userName: this.state.user.displayName,
+      timestamp: Date.now(),
+      time: this.props.time,
+      moves: this.props.moves
+    };
+    this.writeNewScore(scoreData, this.state.user);
+  }
+  writeNewScore(scoreData, user) {
+    let batch = db.batch();
+    let usrRef = db.collection('users').doc(user.uid);
+    let scoreRef = db.collection('scores').doc();
+    const scoreId = scoreRef.id;
+    batch.set(usrRef, {scores: {[scoreId]: scoreData}}, {merge: true});
+    batch.set(scoreRef, scoreData);
+
+    batch.commit().then(function() {
+      //console.log('score saved');
+    }).catch(function(err) {
+      console.error(err);
     });
   }
   render() {
@@ -135,8 +155,12 @@ class GameController extends React.Component {
         <div className={'time'}>{moment(this.props.time).format('mm:ss.S')}</div>
         <div className={'moves'}>Moves: {this.props.moves}</div>
         <div className={'actions'}>
-          <button className={'button stop'} disabled={!this.props.active} onClick={()=>this.props.onStop()}>Stop</button>
-          <button className={'button save'} disabled={!this.props.canSaveResult}>Save</button>
+          <button className={'button stop'}
+                  disabled={!this.props.active}
+                  onClick={()=>this.props.onStop()}>Stop</button>
+          <button className={'button save'}
+                  disabled={!this.props.canSaveResult}
+                  onClick={()=>{this.saveResults()}}>Save</button>
         </div>
         <div className={'user-data'}>
           <span>{(this.state.user) ? this.state.user.displayName : ''}</span>
@@ -149,6 +173,7 @@ class GameController extends React.Component {
 export default class Game extends React.Component {
   constructor() {
     super();
+    this.board = React.createRef();
     this.state = {
       timerId: false,
       started: false,
@@ -172,6 +197,7 @@ export default class Game extends React.Component {
     let state = Array.prototype.slice.call(this.state);
     clearInterval(state.timerId);
     state.started = false;
+    this.board.current.shuffleDeck();
     this.setState(state);
   }
   updateTimer() {
@@ -192,7 +218,8 @@ export default class Game extends React.Component {
   render() {
     return(
       <div className={'game'}>
-        <Board active={this.state.started}
+        <Board ref={this.board}
+               active={this.state.started}
                onStart={()=>this.startTimer()}
                increment={()=>this.increment()}
                endGame={()=>this.endGame()} />
@@ -200,7 +227,7 @@ export default class Game extends React.Component {
                         time={this.state.timePassed}
                         moves={this.state.moves}
                         onStop={()=>this.stopTimer()}
-                        saveResult={this.state.canSaveResult} />
+                        canSaveResult={this.state.canSaveResult} />
       </div>
     )
   }
