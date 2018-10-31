@@ -9,12 +9,12 @@ export default class Ranking extends React.Component {
     if (this.props.ranking.length > 0) {
       for (let i = 0; i < this.props.ranking.length; i++) {
         scores.push(
-          <div key={i} className={'score'}>
-            <b>{i}:</b>
-            <span>Time: {this.props.ranking[i].time}</span>
-            <span>Moves: {this.props.ranking[i].moves}</span>
-            <span>Name: {this.props.ranking[i].userName}</span>
-          </div>
+          <tr key={i} className={'score'}>
+            <th><b>{i}:</b></th>
+            <td>{this.props.ranking[i].time}</td>
+            <td>{this.props.ranking[i].moves}</td>
+            <td>{this.props.ranking[i].userName}</td>
+          </tr>
         )
       }
     }
@@ -23,7 +23,20 @@ export default class Ranking extends React.Component {
   render() {
     return (
       <div className={'ranking'}>
-        {this.renderScores()}
+        <div className={'title'}>Classifica</div>
+        <table class="table">
+          <thead>
+          <tr>
+            <th></th>
+            <th>Time</th>
+            <th>Moves</th>
+            <th>Name</th>
+          </tr>
+          </thead>
+          <tbody>
+          {this.renderScores()}
+          </tbody>
+        </table>
       </div>
     )
   }
