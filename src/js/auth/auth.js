@@ -9,10 +9,6 @@ const authStateChanged = function() {
       user.getIdToken().then(function(accessToken) {
         document.getElementById('signIn').style.display = 'none';
         document.getElementById('signOut').style.display = 'block';
-        const accountDetails = JSON.stringify({
-          user
-        }, null, '  ');
-        console.log('account details' + accountDetails);
       });
     } else {
       // User is signed out.

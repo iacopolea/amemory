@@ -1,5 +1,5 @@
 body {
-    opacity: .1;
+    opacity: 1;
 }
 /*layout*/
 @media all and (max-width: 320px){
