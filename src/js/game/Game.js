@@ -22,6 +22,10 @@ class Game extends React.Component {
     };
     this.getScores();
     this.listenToLogin();
+    this.startTimer = this.startTimer.bind(this);
+    this.increment = this.increment.bind(this);
+    this.endGame = this.endGame.bind(this);
+    this.muteVolume = this.muteVolume.bind(this);
   }
   getScores() {
     db.collection("scores").orderBy("time").limit(10)
@@ -68,13 +72,19 @@ class Game extends React.Component {
   increment() {
     this.state.moves++;
   }
-  startTimer() {
+  startTimer(e, callback) {
     let state = this.state;
     state.started = true;
     state.moves = 0;
     state.timeStarted = Date.now();
     this.setState(state);
     this.updateTimer();
+    if (callback) {
+      callback()
+    };
+  }
+  muteVolume(vol) {
+    this.board.current.setVolumes(vol);
   }
   stopTimer() {
     let state = Array.prototype.slice.call(this.state);
@@ -101,15 +111,16 @@ class Game extends React.Component {
       <div className={'game'}>
         <Board ref={this.board}
                active={this.state.started}
-               onStart={()=>this.startTimer()}
-               increment={()=>this.increment()}
-               endGame={()=>this.endGame()} />
+               onStart={this.startTimer}
+               increment={this.increment}
+               endGame={this.endGame} />
         <GameController active={this.state.started}
                         time={this.state.timePassed}
                         moves={this.state.moves}
                         user={this.state.user}
                         onStop={()=>this.stopTimer()}
                         onSave={()=>this.writeNewScore()}
+                        onMute={this.muteVolume}
                         canSaveResult={this.state.canSaveResult} />
         <Ranking ranking={this.state.ranking}/>
       </div>

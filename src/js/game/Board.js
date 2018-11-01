@@ -13,8 +13,30 @@ export default class Board extends React.Component {
       found: 0,
       turn: 0,
     };
+    this.setupSounds();
     this.shuffleDeck();
     this.checkPair = this.checkPair.bind(this);
+    this.startGame = this.startGame.bind(this);
+  }
+  setupSounds() {
+    this.flipSound = new Audio('sound/card-flip.m4a');
+    this.shuffleSound = new Audio('sound/shuffle-deck.m4a');
+    this.foundSound = new Audio('sound/couple-found.m4a');
+    this.backgroundMusic = new Audio('sound/Grasshopper_compressed.mp3');
+    this.backgroundMusic.loop = true;
+    // this.backgroundMusic = new Audio();
+    this.setVolumes(0);
+  }
+  setVolumes(volume) {
+    if (volume === 0) {
+      this.backgroundMusic.pause();
+    } else {
+      this.backgroundMusic.volume = volume * 0.1;
+      this.backgroundMusic.play();
+    }
+    this.flipSound.volume = volume;
+    this.shuffleSound.volume = volume;
+    this.foundSound.volume = volume;
   }
   shuffleDeck() {
     let deck = _.shuffle(this.tilesTypes);
@@ -24,10 +46,12 @@ export default class Board extends React.Component {
     this.state.deck = deck.map((x, i)=>{
       return { id: i, flip: false, remove: false, type: x}
     });
+    this.shuffleSound.play();
   }
   handleClick(i) {
     if (!this.busy && !this.state.deck[i].remove && !this.state.deck[i].flip) {
       this.busy = true;
+      this.flipSound.play();
       this.props.increment();
       let deck = this.state.deck;
       let turn = this.state.turn;
@@ -49,6 +73,7 @@ export default class Board extends React.Component {
     let i = flipped[0];
     let j = flipped[1];
     if (i.type === j.type) {
+      this.foundSound.play();
       state.deck[i.id].remove = true;
       state.deck[j.id].remove = true;
       state.found++;
@@ -62,6 +87,9 @@ export default class Board extends React.Component {
     this.setState(state);
     this.busy = false;
   }
+  startGame() {
+    this.props.onStart(this.shuffleSound.play)
+  }
   renderTiles() {
     let tiles = [];
     for (let i = 0; i<this.state.deck.length; i++) {
@@ -70,7 +98,7 @@ export default class Board extends React.Component {
         number={i}
         flip={(this.state.deck[i].flip)}
         remove={(this.state.deck[i].remove)}
-        onClick={(!this.state.deck[i].remove) ? () => this.handleClick(i) : () => {}}
+        onClick={ () => this.handleClick(i) }
         type={this.state.deck[i].type} />);
     }
     return tiles;
@@ -79,8 +107,9 @@ export default class Board extends React.Component {
     const started = (this.props.active) ? ' is-hidden' : '';
     return (
       <div className="board">
-        <div className={`start-wrapper${started}`}>
-          <button className={'button is-large is-rounded start-button'} onClick={()=>this.props.onStart()}>Start</button>
+        <div className={`start-wrapper${started}`}
+             onClick={this.startGame}>
+          <button className={'button is-large is-rounded start-button'}>Start</button>
         </div>
         {this.renderTiles()}
       </div>
@@ -96,8 +125,9 @@ class Tile extends React.Component {
     const flip = (this.props.flip) ? ' flip' : '';
     const remove = (this.props.remove) ? ' remove' : '';
     return (
-      <div className={`square ${this.props.type}${flip}${remove}`} id={this.props.number}
-           onClick={() => this.props.onClick()}>
+      <div className={`square ${this.props.type}${flip}${remove}`}
+           id={this.props.number}
+           onClick={this.props.onClick}>
         <div className="flipper">
           <div className="front"></div>
           <div className="back"></div>

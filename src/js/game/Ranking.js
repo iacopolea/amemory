@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 
 export default class Ranking extends React.Component {
   constructor(props){
@@ -10,8 +11,8 @@ export default class Ranking extends React.Component {
       for (let i = 0; i < this.props.ranking.length; i++) {
         scores.push(
           <tr key={i} className={'score'}>
-            <th><b>{i}:</b></th>
-            <td>{this.props.ranking[i].time}</td>
+            <th><b>{i}</b></th>
+            <td>{moment(this.props.ranking[i].time).format('mm:ss.S')}</td>
             <td>{this.props.ranking[i].moves}</td>
             <td>{this.props.ranking[i].userName}</td>
           </tr>
@@ -24,7 +25,7 @@ export default class Ranking extends React.Component {
     return (
       <div className={'ranking'}>
         <div className={'title'}>Classifica</div>
-        <table class="table">
+        <table className="table">
           <thead>
           <tr>
             <th></th>

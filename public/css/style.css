@@ -75,7 +75,7 @@ body {
     max-width: 730px;
 }
 .board {
-    margin: 0 auto 50px;
+    margin: 0 auto 2rem;
     border: 5px double #000;
     display: flex;
     flex-flow: row wrap;
@@ -99,6 +99,7 @@ body {
     flex-flow: row wrap;
     align-items: center;
     justify-content: center;
+    margin-bottom: 2rem
 }
 .game-controller .time {
     margin-right: 20px;
@@ -262,4 +263,10 @@ body {
     .square.butterfly .front{
         background-position: -10px -250px;
     }
+}
+.ranking .title {
+    text-align: center;
+}
+.ranking .table {
+    margin: 0 auto;
 }

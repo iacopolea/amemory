@@ -2,10 +2,22 @@ import React from 'react';
 import moment from 'moment';
 
 export default class GameController extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      soundActive: false,
+    }
+    this.controlVolume = this.controlVolume.bind(this);
+  }
   saveResults() {
     this.props.onSave();
   }
-
+  controlVolume() {
+    let soundActive = !this.state.soundActive;
+    let newVolume = (soundActive) ? 0.3 : 0;
+    this.setState({soundActive: soundActive});
+    this.props.onMute(newVolume);
+  }
   render() {
     return (
       <div className={'game-controller'}>
@@ -18,6 +30,7 @@ export default class GameController extends React.Component {
           <button className={'button save'}
                   disabled={!this.props.canSaveResult}
                   onClick={()=>{this.saveResults()}}>Save</button>
+          <button className={'button sounds'} onClick={this.controlVolume}>{(this.state.soundActive) ? 'mute' : 'activate sounds'}</button>
         </div>
         <div className={'user-data'}>
           <span>{(this.props.user) ? this.props.user.displayName : ''}</span>
