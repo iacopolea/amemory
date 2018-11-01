@@ -101,6 +101,7 @@ body {
     justify-content: center;
     margin-bottom: 2rem
 }
+.game-controller .moves,
 .game-controller .time {
     margin-right: 20px;
 }

@@ -25,6 +25,8 @@ class Game extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.increment = this.increment.bind(this);
     this.endGame = this.endGame.bind(this);
+    this.writeNewScore = this.writeNewScore.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
     this.muteVolume = this.muteVolume.bind(this);
   }
   getScores() {
@@ -35,7 +37,7 @@ class Game extends React.Component {
         querySnapshot.forEach(function(doc) {
           scores.push(doc.data());
         });
-        this.setState({ranking: scores})
+        this.setState({ranking: scores});
       })
       .catch(function(error) {
         console.log("Error getting documents: ", error);
@@ -64,6 +66,7 @@ class Game extends React.Component {
 
     batch.commit().then(() => {
       this.setState({canSaveResult: false});
+      this.getScores();
     }).catch((err) => {
       console.error(err);
       return false;
@@ -118,8 +121,8 @@ class Game extends React.Component {
                         time={this.state.timePassed}
                         moves={this.state.moves}
                         user={this.state.user}
-                        onStop={()=>this.stopTimer()}
-                        onSave={()=>this.writeNewScore()}
+                        onStop={this.stopTimer}
+                        onSave={this.writeNewScore}
                         onMute={this.muteVolume}
                         canSaveResult={this.state.canSaveResult} />
         <Ranking ranking={this.state.ranking}/>

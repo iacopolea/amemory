@@ -23,17 +23,17 @@ export default class GameController extends React.Component {
       <div className={'game-controller'}>
         <div className={'time'}>{moment(this.props.time).format('mm:ss.S')}</div>
         <div className={'moves'}>Moves: {this.props.moves}</div>
+        <div className={'user-data'}>
+          <span>{(this.props.user) ? `user: ${this.props.user.displayName }` : ''}</span>
+        </div>
         <div className={'actions'}>
           <button className={'button stop'}
                   disabled={!this.props.active}
                   onClick={()=>this.props.onStop()}>Stop</button>
           <button className={'button save'}
                   disabled={!this.props.canSaveResult}
-                  onClick={()=>{this.saveResults()}}>Save</button>
+                  onClick={()=>{this.saveResults()}}>{(this.props.user) ? 'save' : 'only signed in user can save results'}</button>
           <button className={'button sounds'} onClick={this.controlVolume}>{(this.state.soundActive) ? 'mute' : 'activate sounds'}</button>
-        </div>
-        <div className={'user-data'}>
-          <span>{(this.props.user) ? this.props.user.displayName : ''}</span>
         </div>
       </div>
     )
