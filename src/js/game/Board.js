@@ -31,10 +31,10 @@ export default class Board extends React.Component {
     if (volume === 0) {
       this.backgroundMusic.pause();
     } else {
-      this.backgroundMusic.volume = volume * 0.05;
+      this.backgroundMusic.volume = volume * 0.02;
       this.backgroundMusic.play();
     }
-    this.flipSound.volume = volume;
+    this.flipSound.volume = volume * 1.5;
     this.shuffleSound.volume = volume;
     this.foundSound.volume = volume;
   }
