@@ -22,20 +22,20 @@ export default class Board extends React.Component {
     this.flipSound = new Audio('sound/card-flip.m4a');
     this.shuffleSound = new Audio('sound/shuffle-deck.m4a');
     this.foundSound = new Audio('sound/couple-found.m4a');
-    this.backgroundMusic = new Audio('sound/Grasshopper_compressed.mp3');
-    this.backgroundMusic.loop = true;
+    //this.backgroundMusic = new Audio('sound/Grasshopper_compressed.mp3');
+    //this.backgroundMusic.loop = true;
     // this.backgroundMusic = new Audio();
     this.setVolumes(0);
   }
   setVolumes(volume) {
     if (volume === 0) {
-      this.backgroundMusic.pause();
+      //this.backgroundMusic.pause();
       this.flipSound.volume = 0;
       this.shuffleSound.volume = 0;
       this.foundSound.volume = 0;
     } else {
       this.backgroundMusic.volume = 0.2;
-      this.backgroundMusic.play();
+      //this.backgroundMusic.play();
       this.flipSound.volume = 1;
       this.shuffleSound.volume = 1;
       this.foundSound.volume = 1;
