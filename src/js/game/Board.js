@@ -30,13 +30,17 @@ export default class Board extends React.Component {
   setVolumes(volume) {
     if (volume === 0) {
       this.backgroundMusic.pause();
+      this.flipSound.volume = 0;
+      this.shuffleSound.volume = 0;
+      this.foundSound.volume = 0;
     } else {
-      this.backgroundMusic.volume = volume * 0.02;
+      this.backgroundMusic.volume = 0.2;
       this.backgroundMusic.play();
+      this.flipSound.volume = 1;
+      this.shuffleSound.volume = 1;
+      this.foundSound.volume = 1;
     }
-    this.flipSound.volume = volume * 1.5;
-    this.shuffleSound.volume = volume;
-    this.foundSound.volume = volume;
+
   }
   shuffleDeck() {
     let deck = _.shuffle(this.tilesTypes);
